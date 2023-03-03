@@ -22,6 +22,6 @@ def join_the_queue(request):
 
 
 def leave_the_queue(request):
-    del request.session[id]
+    del request.session['id']
     context = {'session': False}
     return render(request, 'user_page.html', context)
