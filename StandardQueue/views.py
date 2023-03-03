@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 
 def index(request):
-    host = 'https://' + request.get_host() + '/join_the_queue/'
+    host = 'https://' + request.get_host() + '/join-the-queue/'
     context = {'host_url': host}
     return render(request, 'index.html', context)
 
