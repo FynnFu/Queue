@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Queue</title>
+</head>
+<body>
+<h2>Ваш id в очереди: </h2>
+{% if session %}
+<a href="{% url 'leave_the_queue' %}">Покинуть очередь</a>
+{% else %}
+<a href="{% url 'join_the_queue' %}">Вступить очередь</a>
+{% endif %}
+</body>
+</html>

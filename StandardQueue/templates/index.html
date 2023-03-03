@@ -1,0 +1,19 @@
+{% load qr_code %}
+<html>
+<head>
+    <title>Queue</title>
+    <style>
+        .content{
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        {% qr_from_text host_url size="m" image_format="png" error_correction="L" %}
+    </div>
+    <div class="content">
+        <h1>Queue</h1>
+    </div>
+</body>
+</html>
