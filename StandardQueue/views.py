@@ -13,7 +13,8 @@ def join_the_queue(request):
     session_id = request.session.get('id')
     if session_id is None:
         request.session['id'] = 'bar'
-        context = {'session': True}
+        session_id = request.session.get('id')
+        context = {'session': True, 'id': session_id}
         return render(request, 'user_page.html', context)
     else:
         print(session_id)
