@@ -17,8 +17,8 @@ def join_the_queue(request):
         context = {'session': True, 'id': session_id}
         return render(request, 'user_page.html', context)
     else:
-        print(session_id)
-    print(request.session)
+        context = {'session': True, 'id': session_id}
+        return render(request, 'user_page.html', context)
 
 
 def leave_the_queue(request):
