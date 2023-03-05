@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leave The Queue</title>
+</head>
+<body>
+    <h1>Queue "{{ name }}"</h1>
+    {% if error %}
+        {{ error }}
+    {% else %}
+        <h2>Ваш id в очереди: {{ id }}</h2>
+        <a href="{% url 'leave_the_queue' name %}">Покинуть очередь</a>
+    {% endif %}
+
+</body>
+</html>

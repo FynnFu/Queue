@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join The Queue</title>
+</head>
+<body>
+    <h1>Queue "{{ name }}"</h1>
+    {% if error %}
+        {{ error }}
+    {% else %}
+        <form action="/join-the-queue/{{ name }}/" method="post">
+            {% csrf_token %}
+            <label for="your_name">Your name: </label>
+            <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
+            <input type="submit" value="Вступить очередь">
+        </form>
+    {% endif %}
+
+</body>
+</html>

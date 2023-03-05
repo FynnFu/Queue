@@ -6,6 +6,17 @@
         .content{
             display: inline-block;
         }
+        table {
+            border: 1px solid grey;
+        }
+        /* границы ячеек первого ряда таблицы */
+        th {
+            border: 1px solid grey;
+        }
+        /* границы ячеек тела таблицы */
+        td {
+           border: 1px solid grey;
+        }
     </style>
 </head>
 <body>
@@ -14,7 +25,27 @@
     </div>
     <div class="content">
         <div>
-            <p><h1>Queue {{ name }}</h1><a href="{% url 'delete_queue' %}">Удалить очередь</a>
+            <h1>Queue "{{ name }}"</h1>
+            <table>
+                <colgroup>
+                    <col span="2" style="background:Khaki"><!-- С помощью этой конструкции задаем цвет фона для первых двух столбцов таблицы-->
+                    <col style="background-color:LightCyan"><!-- Задаем цвет фона для следующего (одного) столбца таблицы-->
+                </colgroup>
+                {% for user in users %}
+                    {% if forloop.first %}
+                        <tr>
+                            <td>№</td>
+                            <td>Имя</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+            <a href="{% url 'delete_queue' %}">Удалить очередь</a>
         </div>
     </div>
 </body>
