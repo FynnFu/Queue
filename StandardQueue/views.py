@@ -23,7 +23,7 @@ def create_queue(request):
             password = form.cleaned_data.get('password')
             queue = QueueModel.objects.filter(name=name)
             if len(queue) == 0:
-                QueueModel.objects.create(name=name, password=password, ids='')
+                QueueModel.objects.create(name=name, password=password, ids='[0]')
                 request.session['queue'] = name
                 return redirect('index')
             else:
