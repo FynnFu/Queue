@@ -10,7 +10,7 @@ def index(request):
     if session_queue is None:
         return create_queue(request)
     else:
-        host = 'https://' + request.get_host() + f'/join-the-queue/{session_queue}'
+        host = 'https://' + request.get_host() + f'/clear_cookies/{session_queue}'
         users = json.loads(QueueModel.objects.get(name=request.session.get('queue')).ids.replace("'", '"'))
         context = {'host_url': host, 'session': True, 'name': session_queue, 'users': users['users']}
         return render(request, 'index.html', context)
@@ -61,7 +61,8 @@ def join_the_queue(request, name):
             queue = QueueModel.objects.get(name=name)
             ids_old = queue.ids.replace("'", '"')
             ids = json.loads(ids_old)
-            ids['users'].append({"id": str(len(ids) + 1), "name": "default"})
+            your_name = request.POST.get('your_name')
+            ids['users'].append({"id": str(len(ids) + 1), "name": your_name})
             request.session['id'] = len(ids) + 1
             queue.ids = json.dumps(ids)
             queue.save(update_fields=['ids'])
@@ -94,3 +95,7 @@ def leave_the_queue(request, name):
         context = {'session': False, 'name': name}
         return render(request, 'user_page_join.html', context)
 
+
+def clear_cookies(request, name):
+    del request.session['id']
+    return redirect('join_the_queue', name=name)

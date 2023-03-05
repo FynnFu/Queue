@@ -3,6 +3,7 @@ from StandardQueue.views import *
 
 urlpatterns = [
     path('', index, name='index'),
+    path('clear-cookies/', clear_cookies, name='clear_cookie'),
     path('create-queue/', create_queue, name='create_queue'),
     path('delete-queue/', delete_queue, name='delete_queue'),
     path('join-the-queue/<str:name>/', join_the_queue, name='join_the_queue'),
