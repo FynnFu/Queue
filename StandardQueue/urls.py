@@ -3,9 +3,9 @@ from StandardQueue.views import *
 
 urlpatterns = [
     path('', index, name='index'),
-    path('clear-cookies/', clear_cookies, name='clear_cookie'),
     path('create-queue/', create_queue, name='create_queue'),
     path('delete-queue/', delete_queue, name='delete_queue'),
+    path('clear-cookies/<str:name>/', clear_cookies, name='clear_cookie'),
     path('join-the-queue/<str:name>/', join_the_queue, name='join_the_queue'),
     path('leave-the-queue/<str:name>/', leave_the_queue, name='leave_the_queue')
 ]
