@@ -10,7 +10,7 @@ def index(request):
     if session_queue is None:
         return create_queue(request)
     else:
-        host = 'https://' + request.get_host() + '/join-the-queue/'
+        host = 'https://' + request.get_host() + f'/join-the-queue/{session_queue}'
         context = {'host_url': host, 'session': True, 'name': session_queue}
         return render(request, 'index.html', context)
 
@@ -60,6 +60,8 @@ def join_the_queue(request, name):
         new_id = last_id + 1
         ids.append(new_id)
         request.session['id'] = new_id
+        queue.ids = str(ids)
+        queue.save(update_fields=['ids'])
         session_id = request.session.get('id')
         context = {'session': True, 'id': session_id, 'name': name}
         return render(request, 'user_page.html', context)
@@ -69,6 +71,11 @@ def join_the_queue(request, name):
 
 
 def leave_the_queue(request, name):
+    queue = QueueModel.objects.get(name=name)
+    ids = eval(queue.ids)
+    ids.remove(request.session['id'])
+    queue.ids = str(ids)
+    queue.save(update_fields=['ids'])
     del request.session['id']
     context = {'session': False, 'name': name}
     return render(request, 'user_page.html', context)
