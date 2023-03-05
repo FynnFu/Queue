@@ -61,8 +61,7 @@ def join_the_queue(request, name):
             queue = QueueModel.objects.get(name=name)
             ids_old = queue.ids.replace("'", '"')
             ids = json.loads(ids_old)
-            your_name = request.POST.get('your_name')
-            ids['users'].append({"id": str(len(ids) + 1), "name": your_name})
+            ids['users'].append({"id": str(len(ids) + 1), "name": "default"})
             request.session['id'] = len(ids) + 1
             queue.ids = json.dumps(ids)
             queue.save(update_fields=['ids'])
