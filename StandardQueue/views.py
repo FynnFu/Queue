@@ -10,7 +10,7 @@ def index(request):
     if session_queue is None:
         return create_queue(request)
     else:
-        host = 'https://' + request.get_host() + f'/clear_cookies/{session_queue}'
+        host = 'https://' + request.get_host() + f'/clear-cookies/{session_queue}'
         users = json.loads(QueueModel.objects.get(name=request.session.get('queue')).ids.replace("'", '"'))
         context = {'host_url': host, 'session': True, 'name': session_queue, 'users': users['users']}
         return render(request, 'index.html', context)
