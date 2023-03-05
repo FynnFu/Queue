@@ -1,0 +1,16 @@
+{% load qr_code %}
+<html>
+<head>
+    <title>Delete Queue</title>
+</head>
+<body>
+    <div>
+        <h1>Delete Queue {{ name }}</h1>
+        <form method = "POST">
+            {% csrf_token %}
+            <p>Password: {{ form.password }}<input type = "submit" value = "Удалить очередь"></p>
+        </form>
+        {{ error }}
+    </div>
+</body>
+</html>

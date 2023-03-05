@@ -13,7 +13,9 @@
         {% qr_from_text host_url size="m" image_format="png" error_correction="L" %}
     </div>
     <div class="content">
-        <h1>Queue</h1>
+        <div>
+            <p><h1>Queue {{ name }}</h1><a href="{% url 'delete_queue' %}">Удалить очередь</a>
+        </div>
     </div>
 </body>
 </html>

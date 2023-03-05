@@ -6,10 +6,12 @@
 </head>
 <body>
 {% if session %}
-<h2>Ваш id в очереди: {{ id }}</h2>
-<a href="{% url 'leave_the_queue' %}">Покинуть очередь</a>
+    <h1>Queue {{ name }}</h1>
+    <h2>Ваш id в очереди: {{ id }}</h2>
+    <a href="{% url 'leave_the_queue' name %}">Покинуть очередь</a>
 {% else %}
-<a href="{% url 'join_the_queue' %}">Вступить очередь</a>
+    <h1>Queue {{ name }}</h1>
+    <a href="{% url 'join_the_queue' name %}">Вступить очередь</a>
 {% endif %}
 </body>
 </html>

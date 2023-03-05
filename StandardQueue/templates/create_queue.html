@@ -1,0 +1,16 @@
+<html>
+<head>
+    <title>Create Queue</title>
+</head>
+<body>
+    <div>
+        <h1>Create Queue {{ name }}</h1>
+        <form method = "POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type = "submit" value = "Создать очередь">
+        </form>
+        {{ error }}
+    </div>
+</body>
+</html>
