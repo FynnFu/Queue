@@ -1,17 +1,23 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/all_page.css' %}">
     <title>Leave The Queue</title>
 </head>
 <body>
+<div class="basic">
     <h1>Queue "{{ name }}"</h1>
     {% if error %}
         {{ error }}
     {% else %}
-        <h2>Ваш id в очереди: {{ id }}</h2>
+        <h2>Ваше имя: <strong>{{ your_name }}</strong></h2>
+        <h2>Ваш id в очереди: <strong>{{ id }}</strong></h2>
 {#        <a href="{% url 'leave_the_queue' name %}">Покинуть очередь</a>#}
     {% endif %}
-
+</div>
 </body>
 </html>

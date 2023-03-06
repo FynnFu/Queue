@@ -10,9 +10,6 @@
 </head>
 <body>
     <div class="basic">
-        <div class="content">
-            {% qr_from_text host_url size="m" image_format="png" error_correction="L" %}
-        </div>
         <div class=" title">
             <div class="title_table">
                 <h1>Queue "{{ name }}"</h1>
@@ -22,18 +19,22 @@
                             <tr>
                                 <td>№</td>
                                 <td>Имя</td>
+                                <td>Видимость</td>
+                                <td>Действия</td>
                             </tr>
                         {% else %}
-                            {% if user.visible != "Hidden" %}
-                                <tr>
-                                    <td>{{ user.id }}</td>
-                                    <td>{{ user.name }}</td>
-                                </tr>
-                            {% endif %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.visible }}</td>
+                                <td>
+                                    <a class="delete" href="{% url 'hide_user' 'show' user.id %}">Показать</a>
+                                    <a class="delete" href="{% url 'hide_user' 'hide' user.id %}">Скрыть</a>
+                                </td>
+                            </tr>
                         {% endif %}
                     {% endfor %}
                 </table>
-                <a href="{% url 'delete_queue' %}" class="delete">Удалить очередь</a>
             </div>
         </div>
     </div>

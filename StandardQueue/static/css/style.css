@@ -82,8 +82,7 @@ transition: all 0.3s ease;
 font-weight: 600;
 }
 .delete:hover{
-  color:#585a61;
-
+  color: #838383;
 }
 
 @media (max-width:900px) and (min-width:576px) {
