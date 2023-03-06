@@ -11,7 +11,7 @@ def index(request):
         return create_queue(request)
     else:
         host = 'https://' + request.get_host() + f'/clear-cookies/{session_queue}'
-        users = json.loads(QueueModel.objects.get(name=request.session.get('queue')).ids.replace("'", '"'))
+        users = json.loads(QueueModel.objects.get(name=request.session.get('queue')).ids)
         context = {'host_url': host, 'name': session_queue, 'users': users['users']}
         return render(request, 'index.html', context)
 
@@ -64,7 +64,7 @@ def join_the_queue(request, name):
                 return render(request, 'user_page_join.html', context)
             else:
                 queue = QueueModel.objects.get(name=name)
-                ids_old = queue.ids.replace("'", '"')
+                ids_old = queue.ids
                 ids = json.loads(ids_old)
                 new_id = len(ids['users'])
                 ids['users'].append({"id": str(new_id), "name": your_name})
@@ -85,9 +85,9 @@ def join_the_queue(request, name):
 def leave_the_queue(request, name):
     try:
         queue = QueueModel.objects.get(name=name)
-        ids = json.loads(queue.ids.replace("'", '"'))
+        ids = json.loads(queue.ids)
         for i in ids["users"]:
-            if i["id"] == request.session['id']:
+            if i["id"] == str(request.session['id']):
                 ids["users"].remove(i)
         queue.ids = json.dumps(ids)
         queue.save(update_fields=['ids'])
