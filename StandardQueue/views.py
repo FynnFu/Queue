@@ -12,7 +12,7 @@ def index(request):
     else:
         host = 'https://' + request.get_host() + f'/clear-cookies/{session_queue}'
         users = json.loads(QueueModel.objects.get(name=request.session.get('queue')).ids.replace("'", '"'))
-        context = {'host_url': host, 'session': True, 'name': session_queue, 'users': users['users']}
+        context = {'host_url': host, 'name': session_queue, 'users': users['users']}
         return render(request, 'index.html', context)
 
 
@@ -58,19 +58,23 @@ def join_the_queue(request, name):
     session_id = request.session.get('id')
     try:
         if session_id is None:
-            queue = QueueModel.objects.get(name=name)
-            ids_old = queue.ids.replace("'", '"')
-            ids = json.loads(ids_old)
             your_name = request.POST.get('your_name')
-            ids['users'].append({"id": str(len(ids)), "name": your_name})
-            request.session['id'] = len(ids)
-            queue.ids = json.dumps(ids)
-            queue.save(update_fields=['ids'])
-            session_id = request.session.get('id')
-            context = {'session': True, 'id': session_id, 'name': name}
-            return render(request, 'user_page_leave.html', context)
+            if your_name is None:
+                context = {'id': session_id, 'name': name}
+                return render(request, 'user_page_join.html', context)
+            else:
+                queue = QueueModel.objects.get(name=name)
+                ids_old = queue.ids.replace("'", '"')
+                ids = json.loads(ids_old)
+                ids['users'].append({"id": str(len(ids)), "name": your_name})
+                request.session['id'] = len(ids)
+                queue.ids = json.dumps(ids)
+                queue.save(update_fields=['ids'])
+                session_id = request.session.get('id')
+                context = {'id': session_id, 'name': name}
+                return render(request, 'user_page_leave.html', context)
         else:
-            context = {'session': True, 'id': session_id, 'name': name}
+            context = {'id': session_id, 'name': name}
             return render(request, 'user_page_leave.html', context)
     except QueueModel.DoesNotExist:
         context = {'error': "Срок действия QR-кода истек", 'name': name}
