@@ -86,18 +86,20 @@ def leave_the_queue(request, name):
     try:
         queue = QueueModel.objects.get(name=name)
         ids = json.loads(queue.ids.replace("'", '"'))
-        del ids['users'][request.session['id']]
-        queue.ids = str(ids)
+        for i in ids["users"]:
+            if i["id"] == request.session['id']:
+                ids["users"].remove(i)
+        queue.ids = json.dumps(ids)
         queue.save(update_fields=['ids'])
         del request.session['id']
-        context = {'session': False, 'name': name}
+        context = {'name': name}
         return render(request, 'user_page_join.html', context)
     except QueueModel.DoesNotExist:
         del request.session['id']
         context = {'error': "Срок действия QR-кода истек", 'name': name}
         return render(request, 'user_page_leave.html', context)
     except KeyError:
-        context = {'session': False, 'name': name}
+        context = {'name': name}
         return render(request, 'user_page_join.html', context)
 
 
