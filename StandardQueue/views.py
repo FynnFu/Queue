@@ -112,7 +112,6 @@ def clear_cookies(request, name):
         return redirect('join_the_queue', name=name)
 
 
-@login_required
 def admin_panel(request):
     session_queue = request.session.get('queue')
     if session_queue is None:
