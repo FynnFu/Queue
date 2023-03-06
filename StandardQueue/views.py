@@ -97,5 +97,8 @@ def leave_the_queue(request, name):
 
 
 def clear_cookies(request, name):
-    del request.session['id']
-    return redirect('join_the_queue', name=name)
+    try:
+        del request.session['id']
+        return redirect('join_the_queue', name=name)
+    except KeyError:
+        return redirect('join_the_queue', name=name)
