@@ -7,5 +7,5 @@ urlpatterns = [
     path('delete-queue/', delete_queue, name='delete_queue'),
     path('clear-cookies/<str:name>/', clear_cookies, name='clear_cookie'),
     path('join-the-queue/<str:name>/', join_the_queue, name='join_the_queue'),
-    path('leave-the-queue/<str:name>/', leave_the_queue, name='leave_the_queue')
+    # path('leave-the-queue/<str:name>/', leave_the_queue, name='leave_the_queue')
 ]

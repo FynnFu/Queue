@@ -64,8 +64,7 @@ def join_the_queue(request, name):
                 return render(request, 'user_page_join.html', context)
             else:
                 queue = QueueModel.objects.get(name=name)
-                ids_old = queue.ids
-                ids = json.loads(ids_old)
+                ids = json.loads(queue.ids)
                 new_id = len(ids['users'])
                 ids['users'].append({"id": str(new_id), "name": your_name})
                 request.session['id'] = new_id
@@ -82,25 +81,25 @@ def join_the_queue(request, name):
         return render(request, 'user_page_join.html', context)
 
 
-def leave_the_queue(request, name):
-    try:
-        queue = QueueModel.objects.get(name=name)
-        ids = json.loads(queue.ids)
-        for i in ids["users"]:
-            if i["id"] == str(request.session['id']):
-                ids["users"].remove(i)
-        queue.ids = json.dumps(ids)
-        queue.save(update_fields=['ids'])
-        del request.session['id']
-        context = {'name': name}
-        return render(request, 'user_page_join.html', context)
-    except QueueModel.DoesNotExist:
-        del request.session['id']
-        context = {'error': "Срок действия QR-кода истек", 'name': name}
-        return render(request, 'user_page_leave.html', context)
-    except KeyError:
-        context = {'name': name}
-        return render(request, 'user_page_join.html', context)
+# def leave_the_queue(request, name):
+#     try:
+#         queue = QueueModel.objects.get(name=name)
+#         ids = json.loads(queue.ids)
+#         for i in ids["users"]:
+#             if i["id"] == str(request.session['id']):
+#                 ids["users"].remove(i)
+#         queue.ids = json.dumps(ids)
+#         queue.save(update_fields=['ids'])
+#         del request.session['id']
+#         context = {'name': name}
+#         return render(request, 'user_page_join.html', context)
+#     except QueueModel.DoesNotExist:
+#         del request.session['id']
+#         context = {'error': "Срок действия QR-кода истек", 'name': name}
+#         return render(request, 'user_page_leave.html', context)
+#     except KeyError:
+#         context = {'name': name}
+#         return render(request, 'user_page_join.html', context)
 
 
 def clear_cookies(request, name):
