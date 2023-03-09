@@ -10,11 +10,11 @@
 <body>
     <div class="basic">
         <h1>Delete Queue {{ name }}</h1>
+        <h4>{{ error }}</h4>
         <form method = "POST">
             {% csrf_token %}
             <p>Password: {{ form.password }}<input type = "submit" value = "Удалить очередь"></p>
         </form>
-        {{ error }}
     </div>
 </body>
 </html>

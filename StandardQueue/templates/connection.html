@@ -10,12 +10,12 @@
 </head>
 <body>
 <div class="basic">
-    <h1>Queue "{{ name }}"</h1>
+    <h1>Queue</h1>
     <h4>{{ error }}</h4>
-    <form action="/join-the-queue/{{ name }}/" method="post">
+    <form action="/connection/" method="post">
         {% csrf_token %}
-        <label for="your_name">Your name: </label>
-        <input id="your_name" type="text" name="your_name">
+        <label for="name">Queue name: </label>
+        <input id="name" type="text" name="name">
         <input type="submit" value="Вступить очередь">
     </form>
 </div>

@@ -2,7 +2,7 @@
 {% load static %}
 <html>
 <head>
-    <title>Queue</title>
+    <title>Admin Queue</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,6 +30,7 @@
                                 <td>
                                     <a class="delete" href="{% url 'hide_user' 'show' user.id %}">Показать</a>
                                     <a class="delete" href="{% url 'hide_user' 'hide' user.id %}">Скрыть</a>
+                                    <a class="delete" href="{% url 'change_name' user.id %}">Изменить имя</a>
                                 </td>
                             </tr>
                         {% endif %}

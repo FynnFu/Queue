@@ -17,6 +17,15 @@ def index(request):
         return render(request, 'index.html', context)
 
 
+def connection(request):
+    if request.POST:
+        name = request.POST.get('name')
+        if name is None or name == '':
+            return render(request, 'connection.html', {"error": "Имя не может быть пустым!"})
+        return clear_cookies(request, name)
+    return render(request, 'connection.html')
+
+
 def create_queue(request):
     form = QueueForm(request.POST or None)
     if request.POST:
@@ -60,48 +69,30 @@ def join_the_queue(request, name):
     your_name = request.POST.get('your_name')
     try:
         if session_id is None:
-            your_name = request.POST.get('your_name')
-            if your_name is None:
-                context = {'id': session_id, 'name': name}
-                return render(request, 'user_page_join.html', context)
-            else:
-                queue = QueueModel.objects.get(name=name)
-                ids = json.loads(queue.ids)
-                new_id = len(ids['users'])
-                ids['users'].append({"id": str(new_id), "name": your_name, "visible": "Shown"})
-                request.session['id'] = new_id
-                queue.ids = json.dumps(ids)
-                queue.save(update_fields=['ids'])
-                session_id = request.session.get('id')
-                context = {'id': session_id, 'name': name, 'your_name': your_name}
-                return render(request, 'user_page_leave.html', context)
+            if request.POST:
+                your_name = request.POST.get('your_name')
+                if your_name is None or your_name == '':
+                    context = {'error': "Ваше имя не может быть пустым", 'name': name}
+                    return render(request, 'user_page_join.html', context)
+                else:
+                    queue = QueueModel.objects.get(name=name)
+                    ids = json.loads(queue.ids)
+                    new_id = len(ids['users'])
+                    ids['users'].append({"id": str(new_id), "name": your_name, "visible": "Shown"})
+                    request.session['id'] = new_id
+                    queue.ids = json.dumps(ids)
+                    queue.save(update_fields=['ids'])
+                    session_id = request.session.get('id')
+                    context = {'id': session_id, 'name': name, 'your_name': your_name}
+                    return render(request, 'user_page_leave.html', context)
+            context = {'name': name}
+            return render(request, 'user_page_join.html', context)
         else:
             context = {'id': session_id, 'name': name, 'your_name': your_name}
             return render(request, 'user_page_leave.html', context)
     except QueueModel.DoesNotExist:
-        context = {'error': "Срок действия QR-кода истек", 'name': name}
+        context = {'error': "Срок действия QR-кода истек или очередь не найдена", 'name': name}
         return render(request, 'user_page_join.html', context)
-
-
-# def leave_the_queue(request, name):
-#     try:
-#         queue = QueueModel.objects.get(name=name)
-#         ids = json.loads(queue.ids)
-#         for i in ids["users"]:
-#             if i["id"] == str(request.session['id']):
-#                 ids["users"].remove(i)
-#         queue.ids = json.dumps(ids)
-#         queue.save(update_fields=['ids'])
-#         del request.session['id']
-#         context = {'name': name}
-#         return render(request, 'user_page_join.html', context)
-#     except QueueModel.DoesNotExist:
-#         del request.session['id']
-#         context = {'error': "Срок действия QR-кода истек", 'name': name}
-#         return render(request, 'user_page_leave.html', context)
-#     except KeyError:
-#         context = {'name': name}
-#         return render(request, 'user_page_join.html', context)
 
 
 def clear_cookies(request, name):
@@ -122,7 +113,7 @@ def admin_panel(request):
         return render(request, 'admin_page.html', context)
 
 
-def hide_user(request, move, user_id):
+def move_user(request, move, user_id):
     session_queue = request.session.get('queue')
     queue = QueueModel.objects.get(name=session_queue)
     ids = json.loads(queue.ids)
@@ -135,3 +126,25 @@ def hide_user(request, move, user_id):
     queue.ids = json.dumps(ids)
     queue.save(update_fields=['ids'])
     return redirect('admin_panel')
+
+
+def change_name(request, user_id):
+    session_queue = request.session.get('queue')
+    old_name = None
+    queue = QueueModel.objects.get(name=session_queue)
+    ids = json.loads(queue.ids)
+    for i in ids["users"]:
+        if i["id"] == user_id:
+            old_name = i['name']
+    if request.POST:
+        new_name = request.POST.get('new_name')
+        queue = QueueModel.objects.get(name=session_queue)
+        ids = json.loads(queue.ids)
+        for i in ids["users"]:
+            if i["id"] == user_id:
+                i['name'] = new_name
+        queue.ids = json.dumps(ids)
+        queue.save(update_fields=['ids'])
+        return redirect('admin_panel')
+    context = {"name": session_queue, 'old_name': old_name}
+    return render(request, 'change_name.html', context)

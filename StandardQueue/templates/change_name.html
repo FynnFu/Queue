@@ -6,17 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/all_page.css' %}">
-    <title>Join The Queue</title>
+    <title>Change Name</title>
 </head>
 <body>
 <div class="basic">
     <h1>Queue "{{ name }}"</h1>
     <h4>{{ error }}</h4>
-    <form action="/join-the-queue/{{ name }}/" method="post">
+    <form action="" method="post">
         {% csrf_token %}
-        <label for="your_name">Your name: </label>
-        <input id="your_name" type="text" name="your_name">
-        <input type="submit" value="Вступить очередь">
+        <label>Old name: {{ old_name }}</label>
+        <label for="new_name">New name: </label>
+        <input id="new_name" type="text" name="new_name">
+        <input type="submit" value="Изменить имя">
     </form>
 </div>
 </body>
