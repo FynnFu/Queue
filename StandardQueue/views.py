@@ -40,8 +40,13 @@ def create_queue(request):
                 request.session['queue'] = name
                 return redirect('index')
             else:
-                context = {'form': form, 'error': 'Это название уже занято'}
-                return render(request, 'create_queue.html', context)
+                queue = QueueModel.objects.get(name=name)
+                if form.cleaned_data.get('password') == queue.password:
+                    request.session['queue'] = name
+                    return redirect('index')
+                else:
+                    context = {"form": form, "error": "Имя уже занято или неверный пароль!"}
+                    return render(request, 'create_queue.html', context)
     context = {'form': form}
     return render(request, 'create_queue.html', context)
 
