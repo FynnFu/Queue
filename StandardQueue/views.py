@@ -93,6 +93,15 @@ def join_the_queue(request, name):
             context = {'name': name}
             return render(request, 'user_page_join.html', context)
         else:
+            queue = QueueModel.objects.get(name=name)
+            ids = json.loads(queue.ids)
+            for i in ids["users"]:
+                print(i["id"])
+                if i["id"] == str(session_id):
+                    your_name = i['name']
+                    print((i['name'] + ' - name'))
+            print(session_id)
+            print(your_name)
             context = {'id': session_id, 'name': name, 'your_name': your_name}
             return render(request, 'user_page_leave.html', context)
     except QueueModel.DoesNotExist:
